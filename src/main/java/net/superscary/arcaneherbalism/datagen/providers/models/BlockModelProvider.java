@@ -19,6 +19,7 @@ public class BlockModelProvider extends BlockStateProvider {
     protected void registerStatesAndModels () {
         flowerBlock(ModBlocks.DEADLY_NIGHTSHADE, ModBlocks.POTTED_DEADLY_NIGHTSHADE);
         flowerBlock(ModBlocks.WEED, ModBlocks.POTTED_WEED);
+        flowerBlock(ModBlocks.PYROBLOSSOM, ModBlocks.POTTED_PYROBLOSSOM);
     }
 
     private void flowerBlock (BlockDefinition<?> block, BlockDefinition<?> potted) {

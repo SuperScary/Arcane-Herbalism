@@ -2,7 +2,7 @@ package net.superscary.arcaneherbalism.core.hooks;
 
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
-import net.superscary.arcaneherbalism.api.ItemEntityProvider;
+import net.superscary.arcaneherbalism.api.item.ItemEntityProvider;
 import net.superscary.arcaneherbalism.core.registries.ModItems;
 import net.superscary.arcaneherbalism.item.Eyeball;
 

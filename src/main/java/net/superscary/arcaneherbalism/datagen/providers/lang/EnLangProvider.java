@@ -18,10 +18,13 @@ public class EnLangProvider extends LanguageProvider implements IDataProvider {
         add("itemGroup." + Mod.MOD_ID, Mod.NAME);
         add(ModBlocks.DEADLY_NIGHTSHADE.block(), "Deadly Nightshade");
         add(ModBlocks.POTTED_DEADLY_NIGHTSHADE.block(), "Potted Deadly Nightshade");
+        add(ModBlocks.PYROBLOSSOM.block(), "Pyroblossom");
+        add(ModBlocks.POTTED_PYROBLOSSOM.block(), "Potted Pyroblossom");
         add(ModBlocks.WEED.block(), "Weed");
         add(ModBlocks.POTTED_WEED.block(), "Potted Weed");
 
         add(ModItems.EYEBALL.asItem(), "Eyeball");
+        add(ModItems.LEAF.asItem(), "Leaf");
     }
 
 }

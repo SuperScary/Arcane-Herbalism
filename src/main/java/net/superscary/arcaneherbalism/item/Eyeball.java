@@ -8,7 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.superscary.arcaneherbalism.api.RandomRoll;
+import net.superscary.arcaneherbalism.api.util.RandomRoll;
 import net.superscary.arcaneherbalism.item.base.BaseFoodItem;
 
 import java.util.ArrayList;

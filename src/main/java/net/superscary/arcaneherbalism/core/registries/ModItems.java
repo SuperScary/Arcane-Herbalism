@@ -10,6 +10,7 @@ import net.superscary.arcaneherbalism.core.Mod;
 import net.superscary.arcaneherbalism.core.Tab;
 import net.superscary.arcaneherbalism.core.definitions.ItemDefinition;
 import net.superscary.arcaneherbalism.item.Eyeball;
+import net.superscary.arcaneherbalism.item.base.BaseItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class ModItems {
 
     // REGISTER ITEMS HERE
     public static final ItemDefinition<Eyeball> EYEBALL = item("eyeball", Eyeball::new);
+    public static final ItemDefinition<BaseItem> LEAF = item("leaf", BaseItem::new);
 
     public static List<ItemDefinition<?>> getItems () {
         return Collections.unmodifiableList(ITEMS);

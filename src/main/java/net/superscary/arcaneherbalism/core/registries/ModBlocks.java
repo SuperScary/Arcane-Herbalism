@@ -4,6 +4,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.superscary.arcaneherbalism.block.DeadlyNightshade;
+import net.superscary.arcaneherbalism.block.Pyroblossom;
 import net.superscary.arcaneherbalism.block.base.BaseBlock;
 import net.superscary.arcaneherbalism.block.base.FlowerBlock;
 import net.superscary.arcaneherbalism.block.base.PottedBlock;
@@ -30,12 +32,15 @@ public class ModBlocks {
     public static final List<BlockDefinition<?>> BLOCKS = new ArrayList<>();
     public static final Map<BlockDefinition<?>, BlockDefinition<?>> FLOWERS_MAP = new HashMap<>();
 
-    // REGISTER BLOCKS HERE
-    public static final BlockDefinition<FlowerBlock> DEADLY_NIGHTSHADE = reg("deadly_nightshade", () -> new FlowerBlock(MobEffects.POISON, 8, BlockBehaviour.Properties.ofFullCopy(Blocks.ALLIUM)));
-    public static final BlockDefinition<PottedBlock> POTTED_DEADLY_NIGHTSHADE = registerPottedBlock("potted_deadly_nightshade", DEADLY_NIGHTSHADE, () -> new PottedBlock(DEADLY_NIGHTSHADE));
+    // PLANTS
+    public static final BlockDefinition<FlowerBlock> DEADLY_NIGHTSHADE;
+    public static final BlockDefinition<FlowerBlock> PYROBLOSSOM;
+    public static final BlockDefinition<FlowerBlock> WEED;
 
-    public static final BlockDefinition<FlowerBlock> WEED = reg("weed", () -> new FlowerBlock(MobEffects.POISON, 25, BlockBehaviour.Properties.ofFullCopy(Blocks.ALLIUM), false));
-    public static final BlockDefinition<PottedBlock> POTTED_WEED = registerPottedBlock("potted_weed", WEED, () -> new PottedBlock(WEED));
+    // POTS
+    public static final BlockDefinition<PottedBlock> POTTED_DEADLY_NIGHTSHADE;
+    public static final BlockDefinition<PottedBlock> POTTED_PYROBLOSSOM;
+    public static final BlockDefinition<PottedBlock> POTTED_WEED;
 
     public static List<BlockDefinition<?>> getBlocks () {
         return Collections.unmodifiableList(BLOCKS);
@@ -75,7 +80,7 @@ public class ModBlocks {
             }
         });
         var itemDef = new ItemDefinition<>(name, deferredItem);
-        Tab.add(itemDef);
+        if (addToTab) Tab.add(itemDef);
         BlockDefinition<T> definition = new BlockDefinition<>(name, deferredBlock, itemDef);
         BLOCKS.add(definition);
         return definition;
@@ -89,6 +94,16 @@ public class ModBlocks {
             Mod.getLogger().info("Adding flower pot for {}", block.getKey().id());
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(block.getKey().id(), block.getValue().getDeferredBlock());
         }
+    }
+
+    static {
+        DEADLY_NIGHTSHADE = reg("deadly_nightshade", () -> new DeadlyNightshade(MobEffects.POISON, 8));
+        PYROBLOSSOM = reg("pyroblossom", () -> new Pyroblossom(MobEffects.HARM, 1));
+        WEED = reg("weed", () -> new FlowerBlock(MobEffects.POISON, 25, FlowerBlock.PROPERTIES_WITH_OFFSETS, false));
+
+        POTTED_DEADLY_NIGHTSHADE = registerPottedBlock("potted_deadly_nightshade", DEADLY_NIGHTSHADE, () -> new PottedBlock(DEADLY_NIGHTSHADE));
+        POTTED_PYROBLOSSOM = registerPottedBlock("potted_pyroblossom", PYROBLOSSOM, () -> new PottedBlock(PYROBLOSSOM));
+        POTTED_WEED = registerPottedBlock("potted_weed", WEED, () -> new PottedBlock(WEED));
     }
 
 }

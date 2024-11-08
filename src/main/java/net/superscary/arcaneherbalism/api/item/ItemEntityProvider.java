@@ -1,4 +1,4 @@
-package net.superscary.arcaneherbalism.api;
+package net.superscary.arcaneherbalism.api.item;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;

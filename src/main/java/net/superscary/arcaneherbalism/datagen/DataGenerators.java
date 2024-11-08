@@ -1,6 +1,7 @@
 package net.superscary.arcaneherbalism.datagen;
 
 import net.superscary.arcaneherbalism.core.Mod;
+import net.superscary.arcaneherbalism.datagen.providers.data.CompostableProvider;
 import net.superscary.arcaneherbalism.datagen.providers.lang.EnLangProvider;
 import net.superscary.arcaneherbalism.datagen.providers.models.BlockModelProvider;
 import net.superscary.arcaneherbalism.datagen.providers.models.ItemModelProvider;
@@ -16,6 +17,7 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.superscary.arcaneherbalism.datagen.providers.worldgen.WorldGenProvider;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
@@ -47,6 +49,12 @@ public class DataGenerators {
         pack.addProvider(bindRegistries(CraftingRecipes::new, registries));
         pack.addProvider(bindRegistries(SmeltingRecipes::new, registries));
         pack.addProvider(bindRegistries(BlastingRecipes::new, registries));
+
+        // Compostable
+        pack.addProvider(packOutput -> new CompostableProvider(packOutput, registries));
+
+        // WORLD GEN
+        pack.addProvider(output -> new WorldGenProvider(output, registries));
 
         // LOCALIZATION MUST RUN LAST
         pack.addProvider(output -> localization);

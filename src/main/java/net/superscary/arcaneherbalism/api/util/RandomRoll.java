@@ -1,4 +1,4 @@
-package net.superscary.arcaneherbalism.api;
+package net.superscary.arcaneherbalism.api.util;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.world.item.ItemStack;
