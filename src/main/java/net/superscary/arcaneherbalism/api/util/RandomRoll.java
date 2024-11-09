@@ -3,6 +3,8 @@ package net.superscary.arcaneherbalism.api.util;
 import com.google.common.base.Preconditions;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.Random;
+
 public interface RandomRoll {
 
     ItemStack roll ();
@@ -19,8 +21,13 @@ public interface RandomRoll {
         return (float) (Math.random() * (max - min) + min);
     }
 
-    static boolean roll (double chance) {
-        return Math.random() < chance;
+    static boolean chance (float chance) {
+        Preconditions.checkArgument(chance >= 0 && chance <= 100, "The chance must be between 0 and 100.");
+        if (chance == 0) return false;
+        if (chance == 100) return true;
+        if (chance < 1) chance *= 100;
+        var random = new Random();
+        return random.nextFloat() * 100 <= chance;
     }
 
 }

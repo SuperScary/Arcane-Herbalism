@@ -18,6 +18,7 @@ public class CompostableProvider extends DataMapProvider {
     @Override
     protected void gather () {
         builder(NeoForgeDataMaps.COMPOSTABLES)
-                .add(ModItems.LEAF.id(), new Compostable(0.35f, true), false);
+                .add(ModItems.LEAF.id(), new Compostable(0.35f, true), false)
+                .add(ModItems.DRIED_LEAF.id(), new Compostable(0.6f, true), false);
     }
 }

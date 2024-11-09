@@ -23,12 +23,13 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
 
     @Override
     protected void registerModels () {
-        // Register item models here
         flower(ModBlocks.DEADLY_NIGHTSHADE);
         flower(ModBlocks.WEED);
         flower(ModBlocks.PYROBLOSSOM);
         basicItem(ModItems.EYEBALL.asItem());
         basicItem(ModItems.LEAF.asItem());
+        basicItem(ModItems.DRIED_LEAF.asItem());
+        basicItem(ModItems.BAT_WINGS.asItem());
     }
 
     private ItemModelBuilder blockOff (BlockDefinition<?> block) {

@@ -1,6 +1,7 @@
 package net.superscary.arcaneherbalism.datagen.providers.models;
 
 import net.minecraft.resources.ResourceLocation;
+import net.superscary.arcaneherbalism.api.util.ModelType;
 import net.superscary.arcaneherbalism.core.Mod;
 import net.superscary.arcaneherbalism.core.definitions.BlockDefinition;
 import net.superscary.arcaneherbalism.core.registries.ModBlocks;

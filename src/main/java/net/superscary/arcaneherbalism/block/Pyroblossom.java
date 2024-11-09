@@ -1,8 +1,10 @@
 package net.superscary.arcaneherbalism.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -16,7 +18,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.superscary.arcaneherbalism.block.base.FlowerBlock;
@@ -28,7 +33,7 @@ public class Pyroblossom extends FlowerBlock {
     private boolean canCook;
 
     public Pyroblossom (Holder<MobEffect> effect, float seconds) {
-        super(effect, seconds, PROPERTIES, true);
+        super(effect, seconds, PROPERTIES.randomTicks());
         this.canCook = true;
     }
 
@@ -54,14 +59,35 @@ public class Pyroblossom extends FlowerBlock {
         }
     }
 
+    private boolean hasFlammableNeighbors (LevelReader level, BlockPos pos) {
+        Direction[] directions = Direction.values();
+
+        for (Direction direction : directions) {
+            if (level.getBlockState(pos).isFlammable(level, pos.relative(direction), direction.getOpposite())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public ItemStack droppable () {
         return new ItemStack(Items.BLAZE_POWDER, 1);
     }
 
     @Override
-    public boolean isBurning (@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+    public boolean isFlammable (@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Direction direction) {
         return false;
+    }
+
+    private boolean isFlammable (LevelReader level, BlockPos pos, Direction face) {
+        if (pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && !level.hasChunkAt(pos)) {
+            return false;
+        } else {
+            BlockState state = level.getBlockState(pos);
+            return state.ignitedByLava() && state.isFlammable(level, pos, face);
+        }
     }
 
     @Override
@@ -72,6 +98,44 @@ public class Pyroblossom extends FlowerBlock {
     @Override
     public boolean hasDynamicLightEmission (@NotNull BlockState state) {
         return true;
+    }
+
+    @Override
+    protected void randomTick (@NotNull BlockState state, ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
+            int i = random.nextInt(3);
+            if (i > 0) {
+                BlockPos blockpos = pos;
+
+                for(int j = 0; j < i; ++j) {
+                    blockpos = blockpos.offset(random.nextInt(3) - 1, 1, random.nextInt(3) - 1);
+                    if (!level.isLoaded(blockpos)) {
+                        return;
+                    }
+
+                    BlockState blockstate = level.getBlockState(blockpos);
+                    if (blockstate.isAir()) {
+                        if (this.hasFlammableNeighbors(level, blockpos)) {
+                            level.setBlockAndUpdate(blockpos, BaseFireBlock.getState(level, blockpos));
+                            return;
+                        }
+                    }
+                }
+            } else {
+                for(int k = 0; k < 3; ++k) {
+                    BlockPos blockpos1 = pos.offset(random.nextInt(3) - 1, 0, random.nextInt(3) - 1);
+                    if (!level.isLoaded(blockpos1)) {
+                        return;
+                    }
+
+                    if (level.isEmptyBlock(blockpos1.above()) && this.isFlammable(level, blockpos1, Direction.UP)) {
+                        level.setBlockAndUpdate(blockpos1.above(), BaseFireBlock.getState(level, blockpos1));
+                    }
+                }
+            }
+        }
+
+        super.randomTick(state, level, pos, random);
     }
 
     @Override
@@ -112,10 +176,10 @@ public class Pyroblossom extends FlowerBlock {
     public void animateTick (@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         super.animateTick(state, level, pos, random);
 
-        if (random.nextDouble() < 0.3)
-            level.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
-        level.addParticle(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
-        level.addParticle(ParticleTypes.FLAME, pos.getX() + .5, pos.getY() + .95, pos.getZ() + .5, 0.0D, 0.0D, 0.0D);
+        if (random.nextDouble() < .38d)
+            level.addParticle(ParticleTypes.LAVA, pos.getX() + .5f, pos.getY() + .5f, pos.getZ() + .5f, 0.0d, 0.0d, 0.0d);
+        level.addParticle(ParticleTypes.SMOKE, pos.getX() + .5f, pos.getY() + 1.f, pos.getZ() + .5f, 0.0d, 0.0d, 0.0d);
+        level.addParticle(ParticleTypes.FLAME, pos.getX() + .5f, pos.getY() + 1.f, pos.getZ() + .5f, 0.0d, 0.0d, 0.0d);
     }
 
 }

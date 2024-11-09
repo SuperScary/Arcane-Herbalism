@@ -9,6 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.superscary.arcaneherbalism.core.Mod;
 import net.superscary.arcaneherbalism.core.Tab;
 import net.superscary.arcaneherbalism.core.definitions.ItemDefinition;
+import net.superscary.arcaneherbalism.core.util.Id;
 import net.superscary.arcaneherbalism.item.Eyeball;
 import net.superscary.arcaneherbalism.item.base.BaseItem;
 import org.jetbrains.annotations.Nullable;
@@ -26,15 +27,14 @@ public class ModItems {
     private static final List<ItemDefinition<?>> ITEMS = new ArrayList<>();
 
     // REGISTER ITEMS HERE
-    public static final ItemDefinition<Eyeball> EYEBALL = item("eyeball", Eyeball::new);
-    public static final ItemDefinition<BaseItem> LEAF = item("leaf", BaseItem::new);
+    public static final ItemDefinition<BaseItem> BAT_WINGS;
+    public static final ItemDefinition<BaseItem> DRAGON_TONGUE;
+    public static final ItemDefinition<BaseItem> DRIED_LEAF;
+    public static final ItemDefinition<Eyeball> EYEBALL;
+    public static final ItemDefinition<BaseItem> LEAF;
 
     public static List<ItemDefinition<?>> getItems () {
         return Collections.unmodifiableList(ITEMS);
-    }
-
-    static <T extends Item> ItemDefinition<T> item (String name, Function<Item.Properties, T> factory) {
-        return item(name, Mod.getResource(name), factory, Tab.MAIN);
     }
 
     static <T extends Item> ItemDefinition<T> item (String name, ResourceLocation id, Function<Item.Properties, T> factory) {
@@ -53,6 +53,14 @@ public class ModItems {
 
         ITEMS.add(definition);
         return definition;
+    }
+
+    static {
+        BAT_WINGS = item("Bat Wings", Id.BAT_WINGS, p -> new BaseItem());
+        DRAGON_TONGUE = item("Dragon Tongue", Id.DRAGON_TONGUE, p -> new BaseItem());
+        DRIED_LEAF = item("Dried Leaf", Id.DRIED_LEAF, p -> new BaseItem());
+        EYEBALL = item("Eyeball", Id.EYEBALL, Eyeball::new);
+        LEAF = item("Leaf", Id.LEAF, p -> new BaseItem());
     }
 
 }
